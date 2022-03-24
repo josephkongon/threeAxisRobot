@@ -1,21 +1,38 @@
-import threading
-
-import time
+import Processes
 
 
-def displayThread(name):
-    for i in range(100):
-        print(name)
+def main():
+    e=Processes
 
 
-if __name__ == "__main__":
-    t1 = threading.Thread(target=displayThread, args=("thread1",))
-    t2 = threading.Thread(target=displayThread, args=("thread2",))
+if __name__ == '__main__':
+    main()
 
-    t1.start()
-    t2.start()
 
-    t1.join()
-    t2.join()
 
-    print("done all")
+
+
+
+
+
+# import threading
+#
+# import time
+#
+#
+# def displayThread(name):
+#     for i in range(100):
+#         print(name)
+#
+#
+# if __name__ == "__main__":
+#     t1 = threading.Thread(target=displayThread, args=("thread1",))
+#     t2 = threading.Thread(target=displayThread, args=("thread2",))
+#
+#     t1.start()
+#     t2.start()
+#
+#     t1.join()
+#     t2.join()
+#
+#     print("done all")

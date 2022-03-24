@@ -31,6 +31,7 @@ def getContours(img,threatHold=[100,100],show=False, minArea=1000,filter=0,draw=
     if draw:
         for con in finalCountours:
             cv2.drawContours(img,con[4],-1,(0,0,255),3)
+    #cv2.imshow('inner', img)
     return img, finalCountours
 
 def reorder(points):
