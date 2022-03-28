@@ -224,7 +224,7 @@ class Processes:
         gray = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
         cv2.imshow('frame', gray)
 
-        #getArea(res)
+        getArea(res)
         getDistance(res)
 
 
