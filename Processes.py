@@ -34,10 +34,10 @@ class Processes:
 
         # load the image, convert it to grayscale, and blur it slightly
         image = res
-        cv2.imshow("", image)
+        #cv2.imshow("", image)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         gray = cv2.GaussianBlur(gray, (7, 7), 0)
-        cv2.imshow("", gray)
+        #cv2.imshow("", gray)
 
         # perform edge detection, then perform a dilation + erosion to
         # close gaps in between object edges
@@ -178,7 +178,7 @@ class Processes:
         cv2.imshow('Original', img)
         cv2.waitKey(1)
 
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     cv2.namedWindow('Tracking',cv2.WINDOW_NORMAL)
     cv2.createTrackbar('LH','Tracking',0,255,nothing)
     cv2.createTrackbar('LS','Tracking',0,255,nothing)

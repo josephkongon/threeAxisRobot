@@ -21,11 +21,10 @@ def motor1(pin, angel):
 
 def rotateServer(pin, angle):
     board.digital[pin].write(angle)
-    sleep(0.00015)
+    sleep(0.0000015)
 
 def threadsFuntion(pin,agl):
     t1 = threading.Thread(target=motor1, args=(pin, agl))
-
     t1.start()
     t1.join()
 
