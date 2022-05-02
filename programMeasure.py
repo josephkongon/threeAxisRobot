@@ -4,7 +4,73 @@ import cv2
 from object_detector import *
 import numpy as np
 from PIL import Image
+from pyfirmata import Arduino, SERVO
+from time import sleep
+import threading
 
+port = 'COM3'
+pin10 = 10
+pin9 = 9
+board = Arduino(port)
+
+board.digital[pin10].mode = SERVO
+board.digital[pin9].mode = SERVO
+
+motor1=0
+motor2=0
+# motor3=0
+
+allmators= {(9,180),(10,180)}
+reset ={9,10}
+
+def rotateServer(pin, angle):
+    board.digital[pin].write(angle)
+    sleep(0.015)
+
+
+def getmotorAngle(pin):
+    if (pin == 9):
+        return motor1
+    if (pin == 10):
+        return motor2
+
+def motorUp(pin, angle):
+    global motor1
+    global motor2
+    before = getmotorAngle(pin)
+
+    value=before - angle
+    print(angle,before)
+    if(angle>before):
+        v= angle-before
+        for i in range(before, angle,1):
+            rotateServer(pin, i)
+            if (pin == 9):
+                motor1 = angle
+            if (pin == 10):
+                motor2 = angle
+
+
+    if (angle<before):
+        v =before - angle
+        for i in range(before, angle, -1):
+            rotateServer(pin, i)
+            if (pin == 9):
+                motor1 = angle
+            if (pin == 10):
+                motor2 = angle
+
+for i in reset:
+    rotateServer(i, 0)
+
+for m in allmators:
+    motorUp(m[0], 0)
+    # motorUp(m[0],m[1])
+    # motorUp(m[0], 20)
+    # motorUp(m[0], 80)
+    # motorUp(m[0], 0)
+    # motorUp(m[0], 150)
+    # motorUp(m[0], 0)
 # load Aruco dectector
 
 parameters = cv2.aruco.DetectorParameters_create()
@@ -96,8 +162,8 @@ while True:
             object_w = math.floor(w / pixel_cm_ratio)
             object_h = math.floor(h / pixel_cm_ratio)
             area = round(object_w * object_h)
-            print(area, "area")
-            if(area<20 or area >26 ):
+            #print(area, "area")
+            if(area<16 or area >26 ):
                 print(area,  object_h,object_w)
                 # here we get the correct recctangle of the object
                 box = cv2.boxPoints(rect)
@@ -137,7 +203,7 @@ while True:
                 print(np.max(angles) , np.min(angles))
                 angle_difference = np.max(angles) - np.min(angles)
                 #print(180-angle_difference)
-                angle =(180-angle_difference)
+                angle =round(180-angle_difference)
                 minangel=angle_difference
 
                 dist = (math.sqrt((x - ch) ** 2 + (y - cw) ** 2)) / pixel_cm_ratio
@@ -157,7 +223,10 @@ while True:
                 cv2.putText(img, "area {} cm**".format(round(area, 1)), (int(x), int(y + 60)), cv2.FONT_HERSHEY_PLAIN,1, (100, 200, 0), 2)
                 # print(box)
 
+
                 area = (w * h) / 100
+                motorUp(pin9, angle)
+                motorUp(pin10, angle)
                 # print("angle ",angle, "with area of",area,"cm")
 
     cv2.imshow("contours", img)
