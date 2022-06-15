@@ -94,15 +94,6 @@ def motorUp(pin, angle):
 for i in reset:
     rotateServer(i, 10)
 
-# for m in allmators:
-     # motorUp(m[0], 100 )
-    # motorUp(m[0],50)
-    # motorUp(m[0], 20)
-    # motorUp(m[0], 80)
-    # motorUp(m[0], 0)
-    # motorUp(m[0], 150)
-    # motorUp(m[0], 50)
-# load Aruco dectector
 
 parameters = cv2.aruco.DetectorParameters_create()
 
@@ -158,7 +149,7 @@ def smallmotorUp(pin, angle):
     before = getmotorAngle(pin)
 
     # value=before - angle
-    print(angle,before)
+
     if(angle>before):
         v= angle-before
         for i in range(before, angle,1):
@@ -174,13 +165,6 @@ def smallmotorUp(pin, angle):
                 motor4 = angle
 
 
-# def motorback(pin, angle):
-#     for i in range(angle, 0, -1):
-#         rotateServer(pin, i)
-#         if (pin == 9):
-#             motor1 = angle
-#         if (pin == 9):
-#             motor2 = angle
 
 
 def smallrotateServer(pin, angle):
@@ -255,7 +239,7 @@ while True:
             object_h = math.floor(h / pixel_cm_ratio)
             area = round(object_w * object_h)
             print(area, "area")
-            if(area<16 or area >22 ):
+            if(area<16 or area >26 ):
                 print(area,  object_h,object_w)
                 # here we get the correct recctangle of the object
                 box = cv2.boxPoints(rect)
@@ -324,15 +308,18 @@ while True:
                             1, (100, 200, 0), 2)
                 cv2.putText(img, "area {} cm**".format(round(area, 1)), (int(x), int(y + 60)), cv2.FONT_HERSHEY_PLAIN,1, (100, 200, 0), 2)
                 # print(box)
-
-                if angle > 100:
-                    angle=round(angle-(0.1*angle))
-                elif angle <100 and angle>90:
-                    angle = round(angle - (0.1 * angle))
-                elif angle < 80 and angle>60:
-                    angle=round(angle+(0.1*angle))
-                elif angle <60 and angle >40:
-                    angle = round(angle + (0.1 * angle)+5 )
+                if angle >130:
+                    angle = round(angle - (0.15 * angle) )
+                elif angle >120 and angle<=130:
+                    angle = round(angle - (0.15 * angle) + 10)
+                elif angle > 100 and angle<120:
+                    angle=round((angle-(0.15*angle))+15)
+                elif angle <120 and angle>=90:
+                    angle = round((angle+15) - (0.1 * angle))
+                elif angle < 90 and angle>=60:
+                    angle=round(angle+(0.1*angle)+10)
+                elif angle <60 and angle >=40:
+                    angle = round(angle + (0.1 * angle)+15 )
                 elif angle <40 :
                     angle = round(angle + (0.2 * angle) + 20)
 
@@ -345,6 +332,7 @@ while True:
                 r = threading.Thread(motorUp(11, angle))
                 r.start()
                 r.join()
+                sleep(2)
 
                 sleep(2)
 
@@ -374,16 +362,32 @@ while True:
                 t.join()
                 sleep(2)
 
-                r = threading.Thread(motorUp(9, 70))
+                r = threading.Thread(motorUp(9, 80))
                 r.start()
                 r.join()
+                sleep(2)
+
+                t = threading.Thread(motorUp(10, 0))
+                t.start()
+                t.join()
 
                 sleep(2)
                 t = threading.Thread(motorUp(11, 0))
                 t.start()
                 t.join()
+                sleep(2)
+
+                t = threading.Thread(motorUp(9, 60))
+                t.start()
+                t.join()
+                sleep(2)
+
+                t = threading.Thread(motorUp(10, 25))
+                t.start()
+                t.join()
 
                 sleep(2)
+
                 t = threading.Thread(smallmotorUp(7, 0))
                 t.start()
                 t.join()
@@ -396,7 +400,7 @@ while True:
         r.join()
 
         sleep(2)
-        r = threading.Thread(motorUp(11, 90))
+        r = threading.Thread(motorUp(11, 100))
         r.start()
         r.join()
 
@@ -430,16 +434,32 @@ while True:
         t.join()
         sleep(2)
 
-        r = threading.Thread(motorUp(9, 70))
+        r = threading.Thread(motorUp(9, 80))
         r.start()
         r.join()
+        sleep(2)
+
+        t = threading.Thread(motorUp(10, 0))
+        t.start()
+        t.join()
 
         sleep(2)
         t = threading.Thread(motorUp(11, 0))
         t.start()
         t.join()
+        sleep(2)
+
+        t = threading.Thread(motorUp(9, 60))
+        t.start()
+        t.join()
+        sleep(2)
+
+        t = threading.Thread(motorUp(10, 25))
+        t.start()
+        t.join()
 
         sleep(2)
+
         t = threading.Thread(smallmotorUp(7, 0))
         t.start()
         t.join()
